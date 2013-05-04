@@ -9,7 +9,7 @@
       <a class="brand" href="index.php">LeDomainR</a>
       <div class="nav-collapse collapse">
         <ul class="nav">
-          <li class="active">
+          <li>
             <a href="index.php">Domains</a> 
           </li>
           <li>
