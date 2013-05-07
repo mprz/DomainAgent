@@ -1,30 +1,46 @@
 <?php require_once ("includes/database.php"); ?>
-<?php require_once ("includes/functions.php"); ?>
 <?php
     $action = $_GET['action'];
     $id = $_GET['id'];
 ?>
-<?php 
-$result = mysql_query("SELECT COUNT(1) FROM Domains", $connection);
-if (!result) {
-        die("Query failed");
-}
-$count = mysql_result($result, 0);
-?>
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Domains</title>
+	<title>dAgent - Domains</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-        <link rel="stylesheet" href="https://app.divshot.com/css/bootstrap.css">
-        <link rel="stylesheet" href="https://app.divshot.com/css/bootstrap-responsive.css">
-        <script src="https://app.divshot.com/js/jquery.min.js"></script>
-        <script src="https://app.divshot.com/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="css/bootstrap.css">
+        <link rel="stylesheet" href="css/bootstrap-responsive.css">
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
 </head>
 <body>
     
-<?php require_once("includes/menu.php"); ?>
+<div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+      <a class="brand" href="index.php">dAgent</a>
+      <div class="nav-collapse collapse">
+        <ul class="nav">
+          <li class="active">
+            <a href="index.php">Domains</a> 
+          </li>
+          <li>
+            <a href="registrars.php">Registrars</a> 
+          </li>
+          <li>
+            <a href="about.php">About</a> 
+          </li>    
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="container">
     <div class="page-header">
         <h1>My Domains</h1>
@@ -33,6 +49,45 @@ $count = mysql_result($result, 0);
       to retrieve more details, edit your domains, manage your domain registrars
       and configure app settings.</p>
     <hr>
+<?php
+    if ($action==='remove') {
+            $queryRemove = "DELETE FROM `domains` WHERE `DomainID`=" . $id;
+            $resultRemove = mysql_query($queryRemove);    
+echo '  <div class="alert alert-info">';
+echo '      <h4>Success!</h4>The domain has been removed.';
+echo '  </div>';  
+    }
+    elseif ($action === 'add') 
+    {
+        $dName = mysql_real_escape_string(htmlentities($_POST['dname']));
+        $dReg = mysql_real_escape_string(htmlentities($_POST['dreg']));
+        $dDate = mysql_real_escape_string(htmlentities($_POST['ddate']));
+        if ($dName=='' || $dReg=='' || $dDate=='')
+        {
+echo '  <div class="alert alert-error">';
+echo '      <h4>Error!</h4>Error adding a new registrar, you are missing the following:';
+echo ($dName=='') ? '<br />- Domain name' : '';
+echo ($dReg=='') ? '<br />- Registrar id' : '';
+echo ($dDate=='') ? '<br />- Registration date' : '';
+echo '  </div>';
+        }
+        else
+        {
+            $queryInsert = "INSERT INTO `domains` (`DomainName`, `RegID`, `RegDate`) VALUES ('{$dName}', '{$dReg}', '{$dDate}');";
+            $resultInsert = mysql_query($queryInsert);
+echo '  <div class="alert alert-success">';
+echo '      <h4>Success!</h4>The domain '.$dName.' has been added.';
+echo '  </div>';              
+        }
+    }    
+?>
+<?php 
+$result = mysql_query("SELECT COUNT(1) FROM Domains", $connection);
+if (!result) {
+        die("Query failed");
+}
+$count = mysql_result($result, 0);
+?>    
     <div class="tabbable">
         <ul class="nav nav-tabs">
            <li class="active"><a href="#tab1" data-toggle="tab"><i class="icon-list"></i> My domains (<?php echo $count; ?>)</a></li>
@@ -51,13 +106,13 @@ $count = mysql_result($result, 0);
                     </thead>
                     <tbody>
                         <?php 
-                        $result = mysql_query("SELECT DomainID, DomainName, RegID, RenewalDate FROM Domains", $connection);
+                        $result = mysql_query("SELECT DomainID, DomainName, RegID, RenewalDate FROM Domains ORDER BY DomainName", $connection);
                         if (!result) {
                                 die("Query failed");
                         }
                         while ($row = mysql_fetch_array($result)) {
                             echo '  <tr>';
-                            echo '      <td>' . $row["DomainName"] . '  <a href="http://' . $row["DomainName"] . '"><i class="icon-globe"></i></a></td>';
+                            echo '      <td>' . $row["DomainName"] . '  <a href="http://' . $row["DomainName"] . '" target="_blank"><i class="icon-globe"></i></a></td>';
                             
                             $result2 = mysql_query("SELECT RegName FROM Registrars WHERE `RegID`=". $row["RegID"], $connection);
                             if (!result2) {
@@ -75,7 +130,18 @@ $count = mysql_result($result, 0);
                 </table>
             </div>
             <div class="tab-pane" id="tab2">
-               
+                <form action="index.php?action=add" method="post">
+                    <label>Domain name</label>
+                    <input type="text" class="input-medium" name="dname">
+                    <label>Registrar</label>
+                    <input type="text" class="input-medium" name="dreg">
+                    <label>Renewal date</label>
+                    <input type="text" class="input-medium" name="ddate">
+                    <div class="form-actions">
+                      <button type="submit" class="btn btn-primary"><i class="icon-plus"></i> Add domain</button>
+                      <input type="reset" class="btn" value="Reset"> 
+                    </div>                    
+                </form>          
             </div>
         </div>
     </div>

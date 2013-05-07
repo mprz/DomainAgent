@@ -1,5 +1,4 @@
 <?php require_once ("includes/database.php"); ?>
-<?php require_once ("includes/functions.php"); ?>
 <?php
     $action = $_GET['action'];
     $id = $_GET['id'];
@@ -7,17 +6,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Registrars</title>
+	<title>dAgent - Registrars</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-        <link rel="stylesheet" href="https://app.divshot.com/css/bootstrap.css">
-        <link rel="stylesheet" href="https://app.divshot.com/css/bootstrap-responsive.css">
-        <script src="https://app.divshot.com/js/jquery.min.js"></script>
-        <script src="https://app.divshot.com/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="css/bootstrap.css">
+        <link rel="stylesheet" href="css/bootstrap-responsive.css">
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
 </head>
 <body>
     
-<?php require_once("includes/menu.php"); ?>
+<div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+      <a class="brand" href="index.php">dAgent</a>
+      <div class="nav-collapse collapse">
+        <ul class="nav">
+          <li>
+            <a href="index.php">Domains</a> 
+          </li>
+          <li class="active">
+            <a href="registrars.php">Registrars</a> 
+          </li>
+          <li>
+            <a href="about.php">About</a> 
+          </li>          
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="container">
     <div class="page-header">
         <h1>My Registrars</h1>
