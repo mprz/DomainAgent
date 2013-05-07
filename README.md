@@ -10,7 +10,9 @@ https://github.com/mprz/LeDomainR
 Working:
 + Table with list of all the domains
 + Managing registrars: add/edit/delete
++ Removing domains
++ Adding domains
 
 Not working:
 - Installer
-- Managing domains: add/edit/delete
+- Editing domain details
