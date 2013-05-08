@@ -119,9 +119,7 @@ if ($action==='edit') {
             echo '  </div>';    
          } else {
                 $resultUpdate = mysql_query("UPDATE registrars SET RegName='".$dName."', RegLink='".$dWebsite."', RegComment='".$dComments."' WHERE RegID=".$dId, $connection);
-                echo '  <div class="alert alert-success">';
-                echo '      <h4>Success!</h4>The registrar information has been updated.';
-                echo '  </div>';               
+                box('Success', 'The registrar details has been changed.', 'success');             
          }
 }
 ?>
