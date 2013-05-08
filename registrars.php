@@ -97,8 +97,9 @@ if ($action==='edit') {
         <label>Comments</label>
         <textarea class="input-xxlarge" rows="5" name="dcomments">'.$dComments.'</textarea>
         <div class="form-actions">
-          <button type="submit" class="btn btn-primary"><i class="icon-edit"></i> Update registrar details</button>
-          <input type="reset" class="btn" value="Reset"> 
+            <button type="submit" class="btn btn-primary"><i class="icon-edit"></i> Update registrar details</button>
+            <input type="reset" class="btn" value="Reset"> 
+            <a href="registrars.php" class="btn">Cancel</a>          
         </div>                    
     </form>';
     }
@@ -112,11 +113,9 @@ if ($action==='edit') {
         $dComments = mysql_real_escape_string(htmlentities($_POST['dcomments']));
         if ($dName=='' || $dWebsite=='')
         {
-            echo '  <div class="alert alert-error">';
-            echo '      <h4>Error!</h4>Error updating registrar data, you have not entered the following:';
-            echo ($dName=='') ? '<br />- Name of the registrar' : '';
-            echo ($dWebsite=='') ? '<br />- Web address of the registrar' : '';
-            echo '  </div>';    
+            if ($dName=='') $t1='<li>Domain name</li>'; else $t1=''; 
+            if ($dWebsite=='') $t2='<li>Registrar</li>'; else $t2='';
+            box("Error", 'Error adding a new registrar, you are missing the following:' . '<ul>' .  $t1 .  $t2 . '</ul>', 'error');
          } else {
                 $resultUpdate = mysql_query("UPDATE registrars SET RegName='".$dName."', RegLink='".$dWebsite."', RegComment='".$dComments."' WHERE RegID=".$dId, $connection);
                 box('Success', 'The registrar details has been changed.', 'success');             
@@ -174,7 +173,7 @@ if ($action==='edit') {
         </div>
     </div>
     <hr>
-<?php require_once ("includes/footer.php"); ?>
+<?php foot(); ?>
 </div>    
 </body>
 </html>

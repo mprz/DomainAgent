@@ -22,6 +22,11 @@ echo '
 ';
 }
 
+function foot() {
+echo '
+    <p>Visit dAgent on <a href="https://github.com/mprz/dAgent">Github</a></p>';
+}
+
 // do NOT change anything below this line
 $connection = mysql_connect($DB_SERVER, $DB_USER, $DB_PASS);
     if (!$connection) {

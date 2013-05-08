@@ -55,7 +55,7 @@
             if ($dName=='') $t1='<li>Domain name</li>'; else $t1=''; 
             if ($dReg=='') $t2='<li>Registrar</li>'; else $t2='';
             if ($dDate=='') $t3='<li>Registration date</li>'; else $t3='';
-            box("Error", 'Error adding a new registrar, you are missing the following:' . '<ul>' .  $t1 .  $t2 .  $t3 . '</ul>', 'error');
+            box("Error", 'Error adding a new domain, you are missing the following:' . '<ul>' .  $t1 .  $t2 .  $t3 . '</ul>', 'error');
         }
         else
         {
@@ -129,7 +129,7 @@
         </div>
     </div>
     <hr>
-<?php require_once ("includes/footer.php"); ?>
+<?php foot() ?>
 </div>    
 </body>
 </html>

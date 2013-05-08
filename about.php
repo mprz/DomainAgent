@@ -40,8 +40,8 @@
     <p>Please keep in mind that this is very early release, it is far from finished and may contain bugs and act unpredictable. At this stage it is not recommended to use it to store sensitive data.</p>
     <p>Please keep an eye on https://github.com/mprz/dAgent for updates.</p>
     <p>This product is using Attribution 3.0 Unported license. For details see license.txt or visit http://creativecommons.org/licenses/by/3.0/legalcode</p>
-    <p>You are free to use and reuse this code provided you will add a the followink link: https://github.com/mprz/dAgent</p>
-<?php require_once ("includes/footer.php"); ?>    
+    <p>You are free to use and reuse this code provided you will add a the followink link: dAgent.org</p>
+<?php foot(); ?>    
 </div>    
 </body>
 

@@ -55,7 +55,7 @@ echo '
 ';
 }?>
     <hr>
-<?php require_once ("includes/footer.php"); ?>
+<?php foot(); ?>
 </div>    
 </body>
 </html>
