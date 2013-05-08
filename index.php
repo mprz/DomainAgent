@@ -3,6 +3,7 @@
 <html>
 <head>
 	<title>dAgent - Domains</title><?php head(); ?>
+        
 </head>
 <body>
     
@@ -111,9 +112,18 @@
                     <label>Domain name</label>
                     <input type="text" class="input-medium" name="dname">
                     <label>Registrar</label>
-                    <input type="text" class="input-medium" name="dreg">
+                    <select name="dreg">
+<?php
+                    $resultReg = mysql_query("SELECT RegName, RegID FROM Registrars ORDER BY RegName", $connection);
+                    while ($row = mysql_fetch_array($resultReg)) {
+                        echo '
+                            <option value="'.$row["RegID"].'">'.$row["RegName"].'</option>
+';
+                    }
+?>                      
+                    </select>
                     <label>Renewal date</label>
-                    <input type="text" class="input-medium" name="ddate">
+                    <input id="datepicker" type="text" class="input-medium datepicker" name="ddate">
                     <div class="form-actions">
                       <button type="submit" class="btn btn-primary"><i class="icon-plus"></i> Add domain</button>
                       <input type="reset" class="btn" value="Reset"> 
@@ -124,7 +134,10 @@
     </div>
     <hr>
 <?php foot() ?>
-</div>    
+</div> 
+    <script>    
+        $('.datepicker').datepicker();
+    </script>
 </body>
 </html>
 <?php mysql_close($connection); ?>
