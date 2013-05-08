@@ -145,12 +145,13 @@ if ($action==='edit') {
                                 die("Query failed");
                         }
                         while ($row = mysql_fetch_array($resultSelect)) {
-                            echo '  <tr>';
-                            echo '      <td>' . $row["RegName"] . '</td>';
-                            echo '      <td><a href="http://' . $row["RegLink"] . '">' . $row["RegLink"] . '</a></td>';
-                            echo '      <td>' . $row["RegComment"] . '</td>';
-                            echo '      <td><div class="btn-group"><a class="btn" href="registrars.php?action=edit&id='. $row["RegID"] .'" alt="Edit"><i class="icon-pencil"></i></a><a class="btn" href="registrars.php?action=remove&id='. $row["RegID"] .'" alt="Remove"><i class="icon-remove-circle"></i></a></div></td>';
-                            echo '  </tr>';
+                            echo '
+                        <tr>
+                            <td>' . $row["RegName"] . '</td>
+                            <td><a href="http://' . $row["RegLink"] . '">' . $row["RegLink"] . '</a></td>
+                            <td>' . $row["RegComment"] . '</td>
+                            <td><div class="btn-group"><a class="btn" href="registrars.php?action=edit&id='. $row["RegID"] .'" alt="Edit"><i class="icon-pencil"></i></a><a class="btn" href="registrars.php?action=remove&id='. $row["RegID"] .'" alt="Remove"><i class="icon-remove-circle"></i></a></div></td>
+                        </tr>';
                         }
                         ?>          
                     </tbody>

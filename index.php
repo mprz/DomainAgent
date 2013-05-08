@@ -89,24 +89,18 @@
                     </thead>
                     <tbody>
                         <?php 
-                        $result = mysql_query("SELECT DomainID, DomainName, RegID, RenewalDate FROM Domains ORDER BY DomainName", $connection);
+                        $result = mysql_query("SELECT DomainID, DomainName, Domains.RegID, RenewalDate, RegName FROM Domains, Registrars WHERE Domains.RegID=Registrars.RegID ORDER BY DomainName;", $connection);
                         if (!result) {
                                 die("Query failed");
                         }
                         while ($row = mysql_fetch_array($result)) {
-                            echo '  <tr>';
-                            echo '      <td>' . $row["DomainName"] . '  <a href="http://' . $row["DomainName"] . '" target="_blank"><i class="icon-globe"></i></a></td>';
-                            
-                            $result2 = mysql_query("SELECT RegName FROM Registrars WHERE `RegID`=". $row["RegID"], $connection);
-                            if (!result2) {
-                                    die("Query failed");
-                            }                            
-                            $regName = mysql_result($result2, 0);
-                            
-                            echo '      <td><a href="registrars.php?action=edit&id=' . $row["RegID"] . '">'.$regName.'</td>';
-                            echo '      <td>' . $row["RenewalDate"] . '</td>';
-                            echo '      <td><div class="btn-group"><a class="btn" href="index.php?action=edit&id='. $row["DomainID"] .'" alt="Edit"><i class="icon-pencil"></i></a><a class="btn" href="index.php?action=remove&id='. $row["DomainID"] .'" alt="Remove"><i class="icon-remove-circle"></i></a></div></td>';
-                            echo '  </tr>';
+                            echo '
+                        <tr>
+                            <td>' . $row["DomainName"] . '  <a href="http://' . $row["DomainName"] . '" target="_blank"><i class="icon-globe"></i></a></td>
+                            <td><a href="registrars.php?action=edit&id=' . $row["RegID"] . '">'.$row["RegName"].'</td>
+                            <td>' . $row["RenewalDate"] . '</td>
+                            <td><div class="btn-group"><a class="btn" href="index.php?action=edit&id='. $row["DomainID"] .'" alt="Edit"><i class="icon-pencil"></i></a><a class="btn" href="index.php?action=remove&id='. $row["DomainID"] .'" alt="Remove"><i class="icon-remove-circle"></i></a></div></td>
+                        </tr>';
                         }
                         ?>          
                     </tbody>
