@@ -1,18 +1,8 @@
-<?php require_once ("includes/database.php"); ?>
-<?php
-    $action = $_GET['action'];
-    $id = $_GET['id'];
-?>
+<?php require_once ("includes/functions.php"); ?>
 <!DOCTYPE html>
 <html>
 <head>
-	<title>dAgent - Registrars</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-        <link rel="stylesheet" href="css/bootstrap.css">
-        <link rel="stylesheet" href="css/bootstrap-responsive.css">
-        <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
+	<title>dAgent - Registrars</title><?php head(); ?>
 </head>
 <body>
     
@@ -66,18 +56,14 @@ echo '  </div>';
         {
             $queryInsert = "INSERT INTO `registrars` (`RegName`, `RegLink`, `RegComment`) VALUES ('{$dName}', '{$dWebsite}', '{$dComments}');";
             $resultInsert = mysql_query($queryInsert);
-echo '  <div class="alert alert-success">';
-echo '      <h4>Success!</h4>The registrar has been added.';
-echo '  </div>';              
+            box('Success', 'The registrar has been added.', 'success');
         }
     }
     else if ($action === 'remove')
     {
             $queryRemove = "DELETE FROM `registrars` WHERE `RegID`=" . $id;
             $resultRemove = mysql_query($queryRemove);    
-echo '  <div class="alert alert-info">';
-echo '      <h4>Success!</h4>This registrar has been removed.';
-echo '  </div>';            
+            box('Success', 'The registrar has been removed.', 'info');
     }
 ?>
 <?php 
@@ -117,9 +103,7 @@ if ($action==='edit') {
     </form>';
     }
     else {
-echo '  <div class="alert alert-success">';
-echo '      <h4>Success!</h4>The registrar\'s details has been successfully changed.';
-echo '  </div>';     
+            box('Success', 'The registrar details has been changed.', 'success');   
     }
 } elseif ($action==='update') {
         $dId = mysql_real_escape_string(htmlentities($_POST['did']));
@@ -143,7 +127,7 @@ echo '  </div>';
 ?>
     <div class="tabbable">
         <ul class="nav nav-tabs">
-           <li class="active"><a href="#tab1" data-toggle="tab"><i class="icon-list"></i> My registrars (<?php echo $count; ?>)</a></li>
+           <li class="active"><a href="#tab1" data-toggle="tab"><i class="icon-list"></i> My registrars <span class="badge badge-info"><?php echo $count; ?></span></a></li>
            <li><a href="#tab2" data-toggle="tab"><i class="icon-plus"></i> Add new registrar</a></li>
         </ul>    
         <div class="tab-content">
@@ -168,7 +152,7 @@ echo '  </div>';
                             echo '      <td>' . $row["RegName"] . '</td>';
                             echo '      <td><a href="http://' . $row["RegLink"] . '">' . $row["RegLink"] . '</a></td>';
                             echo '      <td>' . $row["RegComment"] . '</td>';
-                            echo '      <td><div class="btn-group"><button class="btn"><a href="registrars.php?action=edit&id='. $row["RegID"] .'" alt="Edit"><i class="icon-pencil"></i></a></button><button class="btn"><a href="registrars.php?action=remove&id='. $row["RegID"] .'" alt="Remove"><i class="icon-remove-circle"></i></a></button></div></td>';
+                            echo '      <td><div class="btn-group"><a class="btn" href="registrars.php?action=edit&id='. $row["RegID"] .'" alt="Edit"><i class="icon-pencil"></i></a><a class="btn" href="registrars.php?action=remove&id='. $row["RegID"] .'" alt="Remove"><i class="icon-remove-circle"></i></a></div></td>';
                             echo '  </tr>';
                         }
                         ?>          
@@ -195,6 +179,5 @@ echo '  </div>';
 <?php require_once ("includes/footer.php"); ?>
 </div>    
 </body>
-
 </html>
 <?php mysql_close($connection); ?>

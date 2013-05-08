@@ -1,18 +1,8 @@
-<?php require_once ("includes/database.php"); ?>
-<?php
-    $action = $_GET['action'];
-    $id = $_GET['id'];
-?>
+<?php require_once ("includes/functions.php"); ?>
 <!DOCTYPE html>
 <html>
 <head>
-	<title>dAgent - Domains</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-        <link rel="stylesheet" href="css/bootstrap.css">
-        <link rel="stylesheet" href="css/bootstrap-responsive.css">
-        <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
+	<title>dAgent - Domains</title><?php head(); ?>
 </head>
 <body>
     
@@ -53,9 +43,7 @@
     if ($action==='remove') {
             $queryRemove = "DELETE FROM `domains` WHERE `DomainID`=" . $id;
             $resultRemove = mysql_query($queryRemove);    
-echo '  <div class="alert alert-info">';
-echo '      <h4>Success!</h4>The domain has been removed.';
-echo '  </div>';  
+            box('Success', 'The domain has been removed.', 'info' );
     }
     elseif ($action === 'add') 
     {
@@ -64,33 +52,28 @@ echo '  </div>';
         $dDate = mysql_real_escape_string(htmlentities($_POST['ddate']));
         if ($dName=='' || $dReg=='' || $dDate=='')
         {
-echo '  <div class="alert alert-error">';
-echo '      <h4>Error!</h4>Error adding a new registrar, you are missing the following:';
-echo ($dName=='') ? '<br />- Domain name' : '';
-echo ($dReg=='') ? '<br />- Registrar id' : '';
-echo ($dDate=='') ? '<br />- Registration date' : '';
-echo '  </div>';
+            if ($dName=='') $t1='<li>Domain name</li>'; else $t1=''; 
+            if ($dReg=='') $t2='<li>Registrar</li>'; else $t2='';
+            if ($dDate=='') $t3='<li>Registration date</li>'; else $t3='';
+            box("Error", 'Error adding a new registrar, you are missing the following:' . '<ul>' .  $t1 .  $t2 .  $t3 . '</ul>', 'error');
         }
         else
         {
             $queryInsert = "INSERT INTO `domains` (`DomainName`, `RegID`, `RegDate`) VALUES ('{$dName}', '{$dReg}', '{$dDate}');";
             $resultInsert = mysql_query($queryInsert);
-echo '  <div class="alert alert-success">';
-echo '      <h4>Success!</h4>The domain '.$dName.' has been added.';
-echo '  </div>';              
+            box("Success", 'Domain '.$dName.' has been added.', 'success');
         }
     }    
-?>
-<?php 
-$result = mysql_query("SELECT COUNT(1) FROM Domains", $connection);
-if (!result) {
-        die("Query failed");
-}
-$count = mysql_result($result, 0);
+    
+    $result = mysql_query("SELECT COUNT(1) FROM Domains", $connection);
+    if (!result) {
+            die("Query failed");
+    }
+    $count = mysql_result($result, 0);
 ?>    
     <div class="tabbable">
         <ul class="nav nav-tabs">
-           <li class="active"><a href="#tab1" data-toggle="tab"><i class="icon-list"></i> My domains (<?php echo $count; ?>)</a></li>
+           <li class="active"><a href="#tab1" data-toggle="tab"><i class="icon-list"></i> My domains <span class="badge badge-info"><?php echo $count; ?></span></a></li>
            <li><a href="#tab2" data-toggle="tab"><i class="icon-plus"></i> Add new domain</a></li>
         </ul>    
         <div class="tab-content">
@@ -122,7 +105,7 @@ $count = mysql_result($result, 0);
                             
                             echo '      <td><a href="registrars.php?action=edit&id=' . $row["RegID"] . '">'.$regName.'</td>';
                             echo '      <td>' . $row["RenewalDate"] . '</td>';
-                            echo '      <td><div class="btn-group"><button class="btn"><a href="index.php?action=edit&id='. $row["DomainID"] .'" alt="Edit"><i class="icon-pencil"></i></a></button><button class="btn"><a href="index.php?action=remove&id='. $row["DomainID"] .'" alt="Remove"><i class="icon-remove-circle"></i></a></button></div></td>';
+                            echo '      <td><div class="btn-group"><a class="btn" href="index.php?action=edit&id='. $row["DomainID"] .'" alt="Edit"><i class="icon-pencil"></i></a><a class="btn" href="index.php?action=remove&id='. $row["DomainID"] .'" alt="Remove"><i class="icon-remove-circle"></i></a></div></td>';
                             echo '  </tr>';
                         }
                         ?>          
@@ -149,6 +132,5 @@ $count = mysql_result($result, 0);
 <?php require_once ("includes/footer.php"); ?>
 </div>    
 </body>
-
 </html>
 <?php mysql_close($connection); ?>

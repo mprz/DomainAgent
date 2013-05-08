@@ -1,13 +1,8 @@
+<?php require_once ("includes/functions.php"); ?>
 <!DOCTYPE html>
 <html>
 <head>
-	<title>dAgent - About</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-        <link rel="stylesheet" href="css/bootstrap.css">
-        <link rel="stylesheet" href="css/bootstrap-responsive.css">
-        <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
+	<title>dAgent - About</title><?php head(); ?>
 </head>
 <body>
     
