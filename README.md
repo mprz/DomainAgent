@@ -12,6 +12,7 @@ Installation
 + Point your browser to install.php
 
 Version 0.11
+------------
 - fixed MySQL queries
 
 Version 0.1
