@@ -60,7 +60,7 @@
         }
         else
         {
-            $queryInsert = "INSERT INTO `domains` (`DomainName`, `RegID`, `RegDate`) VALUES ('{$dName}', '{$dReg}', '{$dDate}');";
+            $queryInsert = "INSERT INTO `domains` (`DomainName`, `RegID`, `RenewalDate`) VALUES ('{$dName}', '{$dReg}', '{$dDate}');";
             $resultInsert = mysql_query($queryInsert);
             box("Success", 'Domain '.$dName.' has been added.', 'success');
         }
@@ -90,7 +90,7 @@
                     </thead>
                     <tbody>
                         <?php 
-                        $result = mysql_query("SELECT DomainID, DomainName, Domains.RegID, RenewalDate, RegName FROM Domains, Registrars WHERE Domains.RegID=Registrars.RegID ORDER BY DomainName;", $connection);
+                        $result = mysql_query("SELECT DomainID, DomainName, Domains.RegID, DATE_FORMAT(RenewalDate, '%W %D %M %Y') as RenewalDate, RegName FROM Domains, Registrars WHERE Domains.RegID=Registrars.RegID ORDER BY DomainName;", $connection);
                         if (!result) {
                                 die("Query failed");
                         }
@@ -123,7 +123,7 @@
 ?>                      
                     </select>
                     <label>Renewal date</label>
-                    <input id="datepicker" type="text" class="input-medium datepicker" name="ddate">
+                    <input id="datepicker" type="text" class="input-medium datepicker" name="ddate" data-date-format="yyyy-mm-dd">
                     <div class="form-actions">
                       <button type="submit" class="btn btn-primary"><i class="icon-plus"></i> Add domain</button>
                       <input type="reset" class="btn" value="Reset"> 
@@ -136,7 +136,7 @@
 <?php foot() ?>
 </div> 
     <script>    
-        $('.datepicker').datepicker();
+        $(".datepicker").datepicker();
     </script>
 </body>
 </html>
