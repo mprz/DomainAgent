@@ -11,6 +11,9 @@ Installation
 + Edit INCLUDES/database.php and provide MySQL connection details
 + Point your browser to install.php
 
+Version 0.11
+- fixed MySQL queries
+
 Version 0.1
 -----------
 What needs fixing:
