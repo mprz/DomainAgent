@@ -2,8 +2,8 @@
 session_start();
 require_once 'database.php';
 
-$action = $_GET['action'];
-$id = $_GET['id'];
+$action = mysql_real_escape_string(htmlentities($_GET['action']));
+$id = mysql_real_escape_string(htmlentities($_GET['id']));
     
 function box($boxTitle, $boxText, $boxType) {
     echo '  <div class="alert alert-'.$boxType.'">';
@@ -41,5 +41,3 @@ $db_select = mysql_select_db($DB_NAME, $connection);
         errorBox('Error', 'Run <strong>install.php<strong> first, error accessing database: ', 'error');
         die(mysql_error());
     }
-
-?>
