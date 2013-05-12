@@ -1,10 +1,16 @@
 <?php
-session_start();
-require_once 'database.php';
+require_once 'config.php';
 
-$action = mysql_real_escape_string(htmlentities($_GET['action']));
-$id = mysql_real_escape_string(htmlentities($_GET['id']));
-    
+// allow letters and numbers
+$action = preg_replace('/[^-a-zA-Z0-9_]/', '', $_GET['action']); 
+// allow only numbers for id
+$id = preg_replace("/[^0-9]/","", $_GET['id']);     
+
+// draws box using Bootstrap classes
+// $boxType:
+// - info
+// - error
+// - success
 function box($boxTitle, $boxText, $boxType) {
     echo '  <div class="alert alert-'.$boxType.'">';
     echo '      <h4>' . $boxTitle . '</h4>' . $boxText;
@@ -29,15 +35,13 @@ echo '
     <p>Visit dAgent on <a href="https://github.com/mprz/dAgent">Github</a></p>';
 }
 
-// do NOT change anything below this line
-$connection = mysql_connect($DB_SERVER, $DB_USER, $DB_PASS);
-    if (!$connection) {
-        errorBox('Error', 'Error connecting to MySQL database: ' ,'error');
-        die(mysql_error());
-    }
-    
-$db_select = mysql_select_db($DB_NAME, $connection);
-    if (!$db_select) {
-        errorBox('Error', 'Run <strong>install.php<strong> first, error accessing database: ', 'error');
-        die(mysql_error());
-    }
+// use PDO instead mysql_connect() to connect to MySQL database
+try {
+    $conn = new PDO('mysql:host='.$DB_SERVER.';dbname='.$DB_NAME, $DB_USER, $DB_PASS);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch(PDOException $e) {
+    echo 'ERROR: ' . $e->getMessage();
+    echo $conn->errorCode();
+    echo $conn->errorInfo();
+    die();
+}    

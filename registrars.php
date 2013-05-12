@@ -41,84 +41,117 @@
     // adding a domain
     if ($action === 'add') 
     {
-        $dName = mysql_real_escape_string(htmlentities($_POST['dname']));
-        $dWebsite = mysql_real_escape_string(htmlentities($_POST['dwebsite']));
-        $dComments = mysql_real_escape_string(htmlentities($_POST['dcomments']));
+        $dName = $_POST['dname'];
+        $dWebsite = $_POST['dwebsite'];
+        $dComments = $_POST['dcomments'];
         if ($dName=='' || $dWebsite=='')
         {
-echo '  <div class="alert alert-error">';
-echo '      <h4>Error!</h4>Error adding a new registrar, you are missing the following:';
-echo ($dName=='') ? '<br />- Name of the registrar' : '';
-echo ($dWebsite=='') ? '<br />- Web address of the registrar' : '';
-echo '  </div>';
+            if ($dName=='') $t1='<li>Registrar name</li>'; else $t1=''; 
+            if ($dReg=='') $t2='<li>Registrar website</li>'; else $t2='';
+            box("Error", 'Error adding a new domain, you are missing the following:' . '<ul>' .  $t1 .  $t2 . '</ul>', 'error');            
         }
         else
         {
-            $queryInsert = "INSERT INTO `registrars` (`RegName`, `RegLink`, `RegComment`) VALUES ('{$dName}', '{$dWebsite}', '{$dComments}');";
-            $resultInsert = mysql_query($queryInsert);
+        try {
+            $query = $conn->prepare('INSERT INTO `Registrars` (`RegName`, `RegLink`, `RegComment`) VALUES (:dname, :dwebsite, :dcomments);');
+            $query->execute(array(
+                'dname' => $dName,
+                'dwebsite' => $dWebsite,
+                'dcomments' => $dComments));            
             box('Success', 'The registrar has been added.', 'success');
+        }
+
+        catch (PDOException $e) {
+            echo 'MySQL ERROR: ' . $e->getMessage();
+            echo $conn->errorCode();
+            echo $conn->errorInfo();
+        }
         }
     }
     else if ($action === 'remove')
     {
-            $queryRemove = "DELETE FROM `registrars` WHERE `RegID`=" . $id;
-            $resultRemove = mysql_query($queryRemove);    
-            box('Success', 'The registrar has been removed.', 'info');
+    try {
+        $query = $conn->prepare('DELETE FROM `Registrars` WHERE `RegID`=:id');
+        $query->execute(array('id' => $id));
+        box('Success', 'The domain has been removed.', 'info' );
+    } 
+    catch (PDOException $e) {
+        echo 'MySQL ERROR: ' . $e->getMessage();
+        echo $conn->errorCode();
+        echo $conn->errorInfo();
     }
-?>
-<?php 
-$resultCount = mysql_query("SELECT COUNT(1) FROM Registrars");
-if (!resultCount) {
-        die("Query failed");
-}
-$count = mysql_result($resultCount, 0);
-?>
-<?php
+    }
+    $count = -1;
+    try {
+        $query = $conn->prepare('SELECT COUNT(1) FROM Registrars;');
+        $query->execute();
+        $count = $query->fetchColumn();
+    } 
+    catch (PDOException $e) {
+        echo 'MySQL ERROR: ' . $e->getMessage();
+        echo $conn->errorCode();
+        echo $conn->errorInfo();
+    }     
+
 if ($action==='edit') {
     if ($id!=''){
-        $resultEdit = mysql_query("SELECT RegID, RegName, RegLink, RegComment FROM Registrars WHERE RegID=".$id, $connection);
-        if (!resultEdit) {
-                die("Query failed");
-        }
-        while ($rowEdit = mysql_fetch_array($resultEdit)) {
-            $dId = $rowEdit['RegID'];
-            $dName = $rowEdit['RegName'];
-            $dWebsite = $rowEdit['RegLink'];
-            $dComments = $rowEdit['RegComment'];
-        }
+    try {
+        $query = $conn->prepare('SELECT RegID, RegName, RegLink, RegComment FROM Registrars WHERE RegID=:regid;');
+        $query->execute(array('regid' => $id));
+        $result=$query->fetchAll();
+        foreach ($result as $row) {            
         echo '
     <form action="registrars.php?action=update" method="post">
         <label>Registrar ID</label>
-        <input type="text" class="input-medium uneditable-input" name="did" value="'.$dId.'" readonly>
+        <input type="text" class="input-medium uneditable-input" name="did" value="'.$row["RegID"].'" readonly>
         <label>Registrar name</label>
-        <input type="text" class="input-medium" name="dname" value="'.$dName.'">
+        <input type="text" class="input-medium" name="dname" value="'.$row["RegName"].'">
         <label>Registrar website</label>
-        <input type="text" class="input-medium" name="dwebsite" value="'.$dWebsite.'">
+        <input type="text" class="input-medium" name="dwebsite" value="'.$row["RegLink"].'">
         <label>Comments</label>
-        <textarea class="input-xxlarge" rows="5" name="dcomments">'.$dComments.'</textarea>
+        <textarea class="input-xxlarge" rows="5" name="dcomments">'.$row["RegComment"].'</textarea>
         <div class="form-actions">
             <button type="submit" class="btn btn-primary"><i class="icon-edit"></i> Update registrar details</button>
             <input type="reset" class="btn" value="Reset"> 
             <a href="registrars.php" class="btn">Cancel</a>          
         </div>                    
-    </form>';
+    </form>';      
+       }
+      } 
+        catch (PDOException $e) {
+            echo 'MySQL ERROR: ' . $e->getMessage();
+            echo $conn->errorCode();
+            echo $conn->errorInfo();
+        }            
     }
     else {
             box('Success', 'The registrar details has been changed.', 'success');   
     }
 } elseif ($action==='update') {
-        $dId = mysql_real_escape_string(htmlentities($_POST['did']));
-        $dName = mysql_real_escape_string(htmlentities($_POST['dname']));
-        $dWebsite = mysql_real_escape_string(htmlentities($_POST['dwebsite']));
-        $dComments = mysql_real_escape_string(htmlentities($_POST['dcomments']));
+        $dId = $_POST['did'];
+        $dName = $_POST['dname'];
+        $dWebsite = $_POST['dwebsite'];
+        $dComments = $_POST['dcomments'];
         if ($dName=='' || $dWebsite=='')
         {
             if ($dName=='') $t1='<li>Domain name</li>'; else $t1=''; 
             if ($dWebsite=='') $t2='<li>Registrar</li>'; else $t2='';
             box("Error", 'Error adding a new registrar, you are missing the following:' . '<ul>' .  $t1 .  $t2 . '</ul>', 'error');
          } else {
-                $resultUpdate = mysql_query("UPDATE registrars SET RegName='".$dName."', RegLink='".$dWebsite."', RegComment='".$dComments."' WHERE RegID=".$dId, $connection);
-                box('Success', 'The registrar details has been changed.', 'success');             
+         try {
+            $query = $conn->prepare('UPDATE Registrars SET RegName=:dname, RegLink=:dwebsite, RegComment=:dcomments WHERE RegID=:regid;');
+            $query->execute(array(
+                'dname' => $dName,
+                'dwebsite' => $dWebsite,
+                'dcomments' => $dComments,
+                'regid' => $dId));              
+            box('Success', 'The registrar details has been changed.', 'success');             
+         }
+            catch (PDOException $e) {
+                echo 'MySQL ERROR: ' . $e->getMessage();
+                echo $conn->errorCode();
+                echo $conn->errorInfo();
+            }         
          }
 }
 ?>
@@ -139,21 +172,27 @@ if ($action==='edit') {
                       </tr>
                     </thead>
                     <tbody>
-                        <?php 
-                        $resultSelect = mysql_query("SELECT RegID, RegName, RegLink, RegComment FROM Registrars", $connection);
-                        if (!resultSelect) {
-                                die("Query failed");
-                        }
-                        while ($row = mysql_fetch_array($resultSelect)) {
-                            echo '
-                        <tr>
-                            <td>' . $row["RegName"] . '</td>
-                            <td><a href="http://' . $row["RegLink"] . '">' . $row["RegLink"] . '</a></td>
-                            <td>' . $row["RegComment"] . '</td>
-                            <td><div class="btn-group"><a class="btn" href="registrars.php?action=edit&id='. $row["RegID"] .'" alt="Edit"><i class="icon-pencil"></i></a><a class="btn" href="registrars.php?action=remove&id='. $row["RegID"] .'" alt="Remove"><i class="icon-remove-circle"></i></a></div></td>
-                        </tr>';
-                        }
-                        ?>          
+                   <?php 
+                    try {
+                        $query = $conn->prepare('SELECT RegID, RegName, RegLink, RegComment FROM Registrars;');
+                        $query->execute();
+                        $result=$query->fetchAll();
+                        foreach ($result as $row) {
+                        echo '
+                            <tr>
+                                <td>' . $row["RegName"] . '</td>
+                                <td><a href="http://' . $row["RegLink"] . '">' . $row["RegLink"] . '</a></td>
+                                <td>' . $row["RegComment"] . '</td>
+                                <td><div class="btn-group"><a class="btn" href="registrars.php?action=edit&id='. $row["RegID"] .'" alt="Edit"><i class="icon-pencil"></i></a><a class="btn" href="registrars.php?action=remove&id='. $row["RegID"] .'" alt="Remove"><i class="icon-remove-circle"></i></a></div></td>
+                            </tr>';
+                        }                        
+                    } 
+                    catch (PDOException $e) {
+                        echo 'MySQL ERROR: ' . $e->getMessage();
+                        echo $conn->errorCode();
+                        echo $conn->errorInfo();
+                    }                            
+?>          
                     </tbody>
                 </table>
             </div>
@@ -178,4 +217,3 @@ if ($action==='edit') {
 </div>    
 </body>
 </html>
-<?php mysql_close($connection); ?>
