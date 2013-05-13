@@ -140,7 +140,7 @@ if ($action==='edit') {
             box("Error", 'Error adding a new domain, you are missing the following:' . '<ul>' .  $t1 .  $t2 . '</ul>', 'error');
          } else {
          try {
-            $query = $conn->prepare('UPDATE Domains SET DomainName=:dname, RegID=:dreg, RenewalDate=:ddate WHERE RegID=:did;');
+            $query = $conn->prepare('UPDATE Domains SET DomainName=:dname, RegID=:dreg, RenewalDate=:ddate WHERE DomainID=:did;');
             $query->execute(array(
                 'dname' => $dName,
                 'dreg' => $dReg,
@@ -203,6 +203,7 @@ if ($action==='edit') {
                     <input type="text" class="input-medium" name="dname">
                     <label>Registrar</label>
                     <select name="dreg">
+                        <option value=""></option>
                     <?php
                     try {
                         $query = $conn->prepare('SELECT RegName, RegID FROM Registrars ORDER BY RegName;');
