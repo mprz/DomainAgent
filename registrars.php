@@ -53,7 +53,7 @@
         else
         {
         try {
-            $query = $conn->prepare('INSERT INTO `Registrars` (`RegName`, `RegLink`, `RegComment`) VALUES (:dname, :dwebsite, :dcomments);');
+            $query = $conn->prepare('INSERT INTO `registrars` (`RegName`, `RegLink`, `RegComment`) VALUES (:dname, :dwebsite, :dcomments);');
             $query->execute(array(
                 'dname' => $dName,
                 'dwebsite' => $dWebsite,
@@ -71,7 +71,7 @@
     else if ($action === 'remove')
     {
     try {
-        $query = $conn->prepare('DELETE FROM `Registrars` WHERE `RegID`=:id');
+        $query = $conn->prepare('DELETE FROM `registrars` WHERE `RegID`=:id');
         $query->execute(array('id' => $id));
         box('Success', 'The domain has been removed.', 'info' );
     } 
@@ -83,7 +83,7 @@
     }
     $count = -1;
     try {
-        $query = $conn->prepare('SELECT COUNT(1) FROM Registrars;');
+        $query = $conn->prepare('SELECT COUNT(1) FROM registrars;');
         $query->execute();
         $count = $query->fetchColumn();
     } 
@@ -96,7 +96,7 @@
 if ($action==='edit') {
     if ($id!=''){
     try {
-        $query = $conn->prepare('SELECT RegID, RegName, RegLink, RegComment FROM Registrars WHERE RegID=:regid;');
+        $query = $conn->prepare('SELECT RegID, RegName, RegLink, RegComment FROM registrars WHERE RegID=:regid;');
         $query->execute(array('regid' => $id));
         $result=$query->fetchAll();
         foreach ($result as $row) {            
@@ -139,7 +139,7 @@ if ($action==='edit') {
             box("Error", 'Error adding a new registrar, you are missing the following:' . '<ul>' .  $t1 .  $t2 . '</ul>', 'error');
          } else {
          try {
-            $query = $conn->prepare('UPDATE Registrars SET RegName=:dname, RegLink=:dwebsite, RegComment=:dcomments WHERE RegID=:regid;');
+            $query = $conn->prepare('UPDATE registrars SET RegName=:dname, RegLink=:dwebsite, RegComment=:dcomments WHERE RegID=:regid;');
             $query->execute(array(
                 'dname' => $dName,
                 'dwebsite' => $dWebsite,
@@ -174,7 +174,7 @@ if ($action==='edit') {
                     <tbody>
                    <?php 
                     try {
-                        $query = $conn->prepare('SELECT RegID, RegName, RegLink, RegComment FROM Registrars;');
+                        $query = $conn->prepare('SELECT RegID, RegName, RegLink, RegComment FROM registrars;');
                         $query->execute();
                         $result=$query->fetchAll();
                         foreach ($result as $row) {
