@@ -11,6 +11,10 @@ Installation
 + Edit INCLUDES/database.php and provide MySQL connection details
 + Point your browser to install.php
 
+Version 0.2
+-----------
+- MySQL rewritten using PDO
+
 Version 0.11
 ------------
 - fixed MySQL queries
