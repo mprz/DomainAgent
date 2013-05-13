@@ -12,7 +12,12 @@ try {
     die();
 }    
 
-$query = "CREATE TABLE IF NOT EXISTS `domains` (
+$domains    = $DB_PREFIX . $DB_DOM;
+$registrars = $DB_PREFIX . $DB_REG;
+$details    = $DB_PREFIX . $DB_DET;
+
+echo 'Creating table: '.$domains;
+$query = "CREATE TABLE IF NOT EXISTS `".$domains."` (
   `DomainID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `DomainName` varchar(50) NOT NULL COMMENT 'domain name',
   `RegID` int(1) unsigned NOT NULL COMMENT 'domain registrar',
@@ -22,7 +27,8 @@ $query = "CREATE TABLE IF NOT EXISTS `domains` (
 );";
 $conn->exec($query);
         
-$query = "CREATE TABLE IF NOT EXISTS `registrars` (
+echo 'Creating table: '.$registrars;
+$query = "CREATE TABLE IF NOT EXISTS `".$registrars."` (
   `RegID` int(1) NOT NULL AUTO_INCREMENT,
   `RegName` varchar(100) NOT NULL,
   `RegLink` varchar(100) NOT NULL,
@@ -31,7 +37,8 @@ $query = "CREATE TABLE IF NOT EXISTS `registrars` (
 );";
 $conn->exec($query);
 
-$query = "INSERT INTO `registrars` (`RegName`, `RegLink`, `RegComment`) VALUES ('NameCheap', 'namecheap.com', 'sample registrar');";
+echo 'Inserting sample data.';
+$query = "INSERT INTO `".$registrars."` (`RegName`, `RegLink`, `RegComment`) VALUES ('NameCheap', 'namecheap.com', 'sample registrar');";
 $conn->exec($query);
 echo 'Tables created.';
 

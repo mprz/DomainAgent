@@ -43,7 +43,7 @@
 <?php
     if ($action==='remove') {
         try {
-            $query = $conn->prepare('DELETE FROM `domains` WHERE `DomainID`=:id');
+            $query = $conn->prepare('DELETE FROM `'.$DB_PREFIX . $DB_DOM.'` WHERE `DomainID`=:id');
             $query->execute(array('id' => $id));
             box('Success', 'The domain has been removed.', 'info' );
         } 
@@ -68,7 +68,7 @@
         else
         {
             try {
-                $query = $conn->prepare('INSERT INTO `domains` (`DomainName`, `RegID`, `RenewalDate`) VALUES (:dname, :dreg, :ddate);');
+                $query = $conn->prepare('INSERT INTO `'.$DB_PREFIX . $DB_DOM.'` (`DomainName`, `RegID`, `RenewalDate`) VALUES (:dname, :dreg, :ddate);');
                 $query->execute(array(
                     'dname' => $dName,
                     'dreg' => $dReg,
@@ -85,7 +85,7 @@
     // get total number of domains
     $count = -1;
     try {
-        $query = $conn->prepare('SELECT COUNT(1) FROM domains;');
+        $query = $conn->prepare('SELECT COUNT(1) FROM '.$DB_PREFIX . $DB_DOM.';');
         $query->execute();
         $count = $query->fetchColumn();
     } 
@@ -97,7 +97,7 @@
 if ($action==='edit') {
     if ($id!=''){
     try {
-        $query = $conn->prepare('SELECT DomainID, DomainName, RegID, RenewalDate FROM domains WHERE DomainID=:regid;');
+        $query = $conn->prepare('SELECT DomainID, DomainName, RegID, RenewalDate FROM '.$DB_PREFIX . $DB_DOM.' WHERE DomainID=:regid;');
         $query->execute(array('regid' => $id));
         $result=$query->fetchAll();
         foreach ($result as $row) {            
@@ -140,7 +140,7 @@ if ($action==='edit') {
             box("Error", 'Error adding a new domain, you are missing the following:' . '<ul>' .  $t1 .  $t2 . '</ul>', 'error');
          } else {
          try {
-            $query = $conn->prepare('UPDATE domains SET DomainName=:dname, RegID=:dreg, RenewalDate=:ddate WHERE DomainID=:did;');
+            $query = $conn->prepare('UPDATE '.$DB_PREFIX . $DB_DOM.' SET DomainName=:dname, RegID=:dreg, RenewalDate=:ddate WHERE DomainID=:did;');
             $query->execute(array(
                 'dname' => $dName,
                 'dreg' => $dReg,
@@ -175,7 +175,7 @@ if ($action==='edit') {
                     <tbody>
                     <?php
                     try {
-                        $query = $conn->prepare('SELECT DomainID, DomainName, Domains.RegID, RenewalDate, RegName FROM domains, registrars WHERE Domains.RegID=Registrars.RegID ORDER BY DomainName;');
+                        $query = $conn->prepare('SELECT DomainID, DomainName, '.$DB_PREFIX . $DB_DOM.'.RegID, RenewalDate, RegName FROM '.$DB_PREFIX . $DB_DOM.', '.$DB_PREFIX . $DB_REG.' WHERE '.$DB_PREFIX . $DB_DOM.'.RegID='.$DB_PREFIX . $DB_REG.'.RegID ORDER BY DomainName;');
                         $query->execute();
                         $result=$query->fetchAll();                    
                         foreach ($result as $row) {
@@ -206,7 +206,7 @@ if ($action==='edit') {
                         <option value=""></option>
                     <?php
                     try {
-                        $query = $conn->prepare('SELECT RegName, RegID FROM registrars ORDER BY RegName;');
+                        $query = $conn->prepare('SELECT RegName, RegID FROM '.$DB_PREFIX . $DB_REG.' ORDER BY RegName;');
                         $query->execute();
                         $result=$query->fetchAll();
                     } 
