@@ -1,20 +1,18 @@
 <?php
 
-require_once 'includes/database.php';
+require_once 'includes/config.php';
 
-$connection = mysql_connect($DB_SERVER, $DB_USER, $DB_PASS);
-    if (!$connection) {
-        echo 'Connection error';
-        die(mysql_error());
-    }
+try {
+    $conn = new PDO('mysql:host='.$DB_SERVER.';dbname='.$DB_NAME, $DB_USER, $DB_PASS);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch(PDOException $e) {
+    echo 'ERROR: ' . $e->getMessage();
+    echo $conn->errorCode();
+    echo $conn->errorInfo();
+    die();
+}    
 
-$db_select = mysql_select_db($DB_NAME, $connection);
-if (!$db_select) {
-    echo 'Database select error';
-    die(mysql_error());
-}
-
-$query1 = "CREATE TABLE IF NOT EXISTS `domains` (
+$query = "CREATE TABLE IF NOT EXISTS `domains` (
   `DomainID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `DomainName` varchar(50) NOT NULL COMMENT 'domain name',
   `RegID` int(1) unsigned NOT NULL COMMENT 'domain registrar',
@@ -22,31 +20,19 @@ $query1 = "CREATE TABLE IF NOT EXISTS `domains` (
   `RenewalDate` date NOT NULL COMMENT 'renewal date',
   PRIMARY KEY (`DomainID`)
 );";
-$result1 = mysql_query($query1);
-if (!$result1) {
-    echo 'Table creation error (1)';
-    die(mysql_error());
-}
-
-$query2 = "CREATE TABLE IF NOT EXISTS `registrars` (
+$conn->exec($query);
+        
+$query = "CREATE TABLE IF NOT EXISTS `registrars` (
   `RegID` int(1) NOT NULL AUTO_INCREMENT,
   `RegName` varchar(100) NOT NULL,
   `RegLink` varchar(100) NOT NULL,
   `RegComment` varchar(500) NOT NULL,
   PRIMARY KEY (`RegID`)
 );";
-$result2 = mysql_query($query2);
-if (!$result2) {
-    echo 'Table creation error (2)';
-    die(mysql_error());
-}
+$conn->exec($query);
 
-$query3 = "INSERT INTO `registrars` (`RegName`, `RegLink`, `RegComment`) VALUES ('NameCheap', 'namecheap.com', 'sample registrar');";
-$result3 = mysql_query($query3);
-if (!$result3) {
-    echo 'Sample registrar not inserted!';
-    die(mysql_error());
-}       
+$query = "INSERT INTO `registrars` (`RegName`, `RegLink`, `RegComment`) VALUES ('NameCheap', 'namecheap.com', 'sample registrar');";
+$conn->exec($query);
 echo 'Tables created.';
 
 ?>
