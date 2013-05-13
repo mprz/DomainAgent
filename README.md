@@ -8,7 +8,7 @@ http://dagent.org
 Installation
 ------------
 + Upload all the files to your desired location
-+ Edit INCLUDES/database.php and provide MySQL connection details
++ Edit INCLUDES/config.php and provide MySQL connection details
 + Point your browser to install.php
 
 Version 0.2
