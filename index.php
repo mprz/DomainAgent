@@ -107,10 +107,29 @@ if ($action==='edit') {
         <input type="text" class="input-medium uneditable-input" name="did" value="'.$row["DomainID"].'" readonly>
         <label>Domain name</label>
         <input type="text" class="input-medium" name="dname" value="'.$row["DomainName"].'">
-        <label>Registrar ID</label>
-        <input type="text" class="input-medium" name="dreg" value="'.$row["RegID"].'">
+        <label>Registrar</label>
+        <select name="dreg">
+            <option value=""></option>        
+';                    
+        try {
+            $queryInn = $conn->prepare('SELECT RegName, RegID FROM '.$DB_PREFIX . $DB_REG.' ORDER BY RegName;');
+            $queryInn->execute();
+            $resultInn=$queryInn->fetchAll();
+        } 
+        catch (PDOException $e) {
+            echo 'MySQL ERROR: ' . $e->getMessage();
+            echo $conn->errorCode();
+            echo $conn->errorInfo();
+        }
+        foreach ($resultInn as $rowIn) {
+            echo '
+            <option value="'.$rowIn["RegID"].'">'.$rowIn["RegName"].'</option>
+            ';
+        }
+        echo '
+        </select>
         <label>Renewal date</label>
-        <input type="text" class="input-medium" name="ddate" value="'.$row["RenewalDate"].'">
+        <input type="text" class="input-medium datepicker" name="ddate" value="'.$row["RenewalDate"].'">
         <div class="form-actions">
             <button type="submit" class="btn btn-primary"><i class="icon-edit"></i> Update domain details</button>
             <input type="reset" class="btn" value="Reset"> 
@@ -223,7 +242,7 @@ if ($action==='edit') {
                     ?>                      
                     </select>
                     <label>Renewal date</label>
-                    <input id="datepicker" type="text" class="input-medium datepicker" name="ddate" data-date-format="yyyy-mm-dd">
+                    <input type="text" class="input-medium datepicker" name="ddate" data-date-format="yyyy-mm-dd">
                     <div class="form-actions">
                       <button type="submit" class="btn btn-primary"><i class="icon-plus"></i> Add domain</button>
                       <input type="reset" class="btn" value="Reset"> 
