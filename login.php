@@ -1,5 +1,5 @@
 <?php
-require_once (__DIR__.'/includes/config.inc.php');
+require_once (__DIR__ . '/includes/includes.php');
 if(!empty($_POST))
 {
     try

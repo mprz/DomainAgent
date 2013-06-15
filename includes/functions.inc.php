@@ -1,4 +1,11 @@
 <?php
+
+function box($boxTitle, $boxText, $boxType) {
+    echo '  <div class="alert alert-'.$boxType.'">';
+    echo '      <h4>' . $boxTitle . '</h4>' . $boxText;
+    echo '  </div>';
+}
+
 function pageHead($title = 'DomainAgent') {
     echo '
 <!DOCTYPE html>

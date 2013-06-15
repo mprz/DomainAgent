@@ -1,5 +1,5 @@
 <?php
-require_once (__DIR__.'/includes/config.inc.php');
+require_once (__DIR__ . '/includes/includes.php');
 
 // We remove the user's data from the session
 unset($_SESSION['user']);
