@@ -1,0 +1,35 @@
+.sidebar span {
+    float: right;
+}
+
+.rounded {
+    text-align: center;
+    border-radius: 2px;
+}
+.blue {
+    background: #2980b9;
+    color: #fff;
+}
+.orange {
+    background: #e67e22;
+    color: #fff;
+}
+.red {
+    background: #c0392b;
+    color: #fff;
+}
+.green {
+    background: #27ae60;
+    color: #fff;
+}
+.purple {
+    background: #9b59b6;
+    color: #fff;
+}
+footer {
+    margin-top:20px;
+    background:#3498db;
+}
+footer a, footer a:hover, footer a:visited {
+    color: #eee;
+}

@@ -1,1 +1,0 @@
-    <p><a href="https://github.com/mprz/dAgent">Visit dAgent on Github</a></p>

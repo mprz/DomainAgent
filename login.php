@@ -1,62 +1,55 @@
-<?php require_once ("includes/functions.php"); ?>
-<!DOCTYPE html>
+<?php
+require_once (__DIR__.'/includes/config.inc.php');
+if(!empty($_POST))
+{
+    try
+    {
+        $conn = DB::getConnection()->prepare("SELECT user_name, user_pass
+                                              FROM users
+                                              WHERE user_name = :username");
+        $result = $conn->execute(array(':username' => $_POST['username']));
+    }
+    catch(PDOException $ex)
+    {
+        die('Cannot retrieve user data.');
+    }
+    $login_ok = false;
+    $row = $conn->fetch();
+    if($row)
+    {
+        if ($row['user_pass']==$_POST['password']) {
+            echo 'GOOD PASS';
+            $login_ok=true;
+        }
+    }
+    if($login_ok)
+    {
+        $_SESSION['user'] = $row;
+        header("Location: index.php");
+        die("Redirecting to: index.php");
+    }
+    else
+    {
+        $comment='Error: wrong username or password';
+    }
+}
+?>
 <html>
 <head>
-	<title>dAgent - Login</title><?php head(); ?>
+    <title>DomainAgent - Login</title>
 </head>
 <body>
-    
-<div class="navbar">
-  <div class="navbar-inner">
-    <div class="container">
-      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </a>
-      <a class="brand" href="index.php">dAgent</a>
-      <div class="nav-collapse collapse">
-        <ul class="nav">
-          <li>
-            <a href="index.php">Domains</a> 
-          </li>
-          <li>
-            <a href="registrars.php">Registrars</a> 
-          </li>
-          <li>
-            <a href="about.php">About</a> 
-          </li>          
-        </ul>
-      </div>
+    <div style="width:300px; margin: 0 auto; text-align: center; margin-top: 50px;">
+        <h1>Login</h1>
+        <?php if (isset($comment)) echo $comment.'<br/><br/>'; ?>
+        <form action="login.php" method="post">
+            Username:<br />
+            <input type="text" name="username" value="" />
+            <br /><br />
+            Password:<br />
+            <input type="password" name="password" value="" />
+            <br /><br />
+            <input type="submit" value="Login" />
+        </form>
     </div>
-  </div>
-</div>
-<div class="container">
-    <div class="page-header">
-        <h1>dAgent</h1>
-    </div>
-    <p class="lead">You need to login to access this page.</p>
-    <hr>
-<?php 
-if ($action=='loggedin') {
-    $_SESSION['logged'] = 1;
-    box('Message', 'You are logged in', 'success');
-}    
-else 
-{
-echo '    
-    <form action="login.php?action=loggedin" style="text-align: center;" method="POST">
-        <label>Username</label>
-        <input type="text" class="input-medium" name="user">
-        <label>Password</label>
-        <input type="text" class="input-medium" name="password">
-        <div><button type="submit" class="btn btn-primary">LOGIN</button></div>
-    </form>
-';
-}?>
-    <hr>
-<?php foot(); ?>
-</div>    
 </body>
-</html>
-<?php mysql_close($connection); ?>
