@@ -1,5 +1,5 @@
-dAgent
-------
+dAgent 0.3
+----------
 Domain Agent is a smart and simple tool that stores most imporant information about the domain you own.
 
 homepage:
