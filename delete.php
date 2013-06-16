@@ -22,7 +22,7 @@ pageHead();
 ?>
 <body>
 <?php headerHere('Delete', 'Make sure you know what you are doing'); ?>
-    <div class="container" style="margin-top: 30px;">
+    <div class="container top30">
         <div class="row">
             <div class="span3">
                 <ul class="nav nav-tabs nav-stacked sidebar">

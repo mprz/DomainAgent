@@ -33,3 +33,9 @@ footer {
 footer a, footer a:hover, footer a:visited {
     color: #eee;
 }
+.top20 {
+    margin-top: 20px;
+}
+.top30 {
+    margin-top: 30px;
+}

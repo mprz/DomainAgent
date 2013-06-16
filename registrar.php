@@ -15,7 +15,7 @@ pageHead();
 ?>
 <body>
 <?php headerHere('Registrars', 'Here you can oversee the registrars, edit their details or add a new one'); ?>
-    <div class="container" style="margin-top: 30px;">
+    <div class="container top30">
         <div class="row">
             <div class="span3">
                 <ul class="nav nav-tabs nav-stacked sidebar">

@@ -32,7 +32,7 @@ pageHead();
 ?>
 <body>
     <?php headerHere('Domains', 'Here you can browse all your domains and see if they require attention'); ?>
-    <div class="container" style="margin-top: 30px;">
+    <div class="container top30">
         <div class="row">
             <div class="span3">
                 <ul class="nav nav-tabs nav-stacked sidebar">

@@ -14,6 +14,23 @@ class Registrars {
     public function getTotal() {
         return $this->_num_of_reg;
     }
+    public function insert($registrar) {
+        try {
+            $query=$this->_connection->prepare("INSERT INTO `registrars` (reg_name, reg_link, reg_comment)
+                                    VALUES (:reg_name, :reg_link, :reg_comment)");
+            $query->execute(array(  'reg_name'      => $registrar['reg_name'],
+                                    'reg_link'      => $registrar['reg_link'],
+                                    'reg_comment'   => $registrar['reg_comment'],
+            ));
+            $result = true;
+        }
+        catch (PDOException $e)
+        {
+            trigger_error('Registrars: error inserting registrar'+$e);
+            $result = false;
+        }
+        return $result;
+    }
     // fetch all registrars from database
     public function fetch() {
         try {

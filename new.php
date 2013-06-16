@@ -23,7 +23,7 @@ if (isset($_POST['action']) && $_POST['action']=='new')
 ?>
 <body>
 <?php headerHere(); ?>
-    <div class="container" style="margin-top: 30px;">
+    <div class="container top30">
         <div class="row">
             <div class="span3">
                 <ul class="nav nav-tabs nav-stacked sidebar">

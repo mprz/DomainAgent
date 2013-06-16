@@ -11,7 +11,7 @@ pageHead();
 ?>
 <body>
     <?php headerHere(); ?>
-    <div class="container" style="margin-top: 30px;">
+    <div class="container top30">
         <div class="row">
             <div class="span3">
                 <ul class="nav nav-tabs nav-stacked sidebar">
@@ -32,7 +32,7 @@ pageHead();
                     <div class="span3 red rounded"><h2><?php echo $d->numExpired(); ?></h2><p>EXPIRED</p>
                     </div>
                 </div>
-                <div class="row" style="margin-top: 20px;">
+                <div class="row top20">
                     <div class="span6 purple rounded"><h2><?php echo $r->getTotal(); ?></h2><p>REGISTRARS</p>
                     </div>
                     <div class="span3 green rounded"><h2><?php echo $d->numGood(); ?></h2><p>GOOD</p>

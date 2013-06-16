@@ -7,15 +7,26 @@ if(empty($_SESSION['user']))
 }
 $d = new Domains();
 $r = new Registrars();
-if (isset($_GET['id']) && $_GET['id']!='')
-    $id = $_GET['id'];
-else
-    $id = -1;
+
+if (isset($_POST['action']) && $_POST['action']=='new') {
+    $error='';
+    if (empty($_POST['reg_name'])) $error = '<li>Registrar name</li>';
+    if (empty($_POST['reg_link'])) $error = $error.'<li>Link to the website</li>';
+    if ($error=='') {
+        $registrar['reg_name'] = $_POST['reg_name'];
+        $registrar['reg_link'] = $_POST['reg_link'];
+        if (!empty($_POST['reg_comment']))
+            $registrar['reg_comment'] = $_POST['reg_comment'];
+        else
+            $registrar['reg_comment'] = '';
+        $r->insert($registrar);
+    }
+}
 pageHead();
 ?>
 <body>
 <?php headerHere('Registrars', 'Adding new registrar, fill all the fields'); ?>
-    <div class="container" style="margin-top: 30px;">
+    <div class="container top30">
         <div class="row">
             <div class="span3">
                 <ul class="nav nav-tabs nav-stacked sidebar">
@@ -28,10 +39,10 @@ pageHead();
                 </ul>
             </div>
             <div class="span9">
+                <?php if ($error!='') box('Error:', 'You are missing the following information: <ul>'.$error.'</ul>', 'error'); ?>
                 <form class="form-horizontal" action="newreg.php" method="post">
                     <fieldset>
-                        <input type="hidden" name="action" value="update">
-
+                        <input type="hidden" name="action" value="new">
                         <div class="control-group">
                             <label class="control-label">Registrar name</label>
                             <div class="controls">
