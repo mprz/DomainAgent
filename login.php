@@ -23,7 +23,6 @@ if(!empty($_POST))
         $password=$_POST['password'];
         $hashed=$row['user_pass'];
         if ($hasher->CheckPassword($password, $hashed)) {
-            echo 'GOOD PASS';
             $login_ok=true;
         }
     }
