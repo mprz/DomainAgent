@@ -104,5 +104,6 @@ if (isset($_POST['action']) && $_POST['action']=='new')
         </div>
     </div>
     <?php footerHere(); ?>
+    <script>$('.datepicker').datepicker();</script>
 </body>
 </html>

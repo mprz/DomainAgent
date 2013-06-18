@@ -1,5 +1,8 @@
 <?php
 require_once (__DIR__ . '/includes/includes.php');
+require_once ('includes/classes/PasswordHash.php');
+$hasher = new PasswordHash(8, TRUE); // initialize the PHPass class
+
 if(!empty($_POST))
 {
     try
@@ -17,7 +20,9 @@ if(!empty($_POST))
     $row = $conn->fetch();
     if($row)
     {
-        if ($row['user_pass']==$_POST['password']) {
+        $password=$_POST['password'];
+        $hashed=$row['user_pass'];
+        if ($hasher->CheckPassword($password, $hashed)) {
             echo 'GOOD PASS';
             $login_ok=true;
         }

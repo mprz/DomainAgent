@@ -128,5 +128,6 @@ pageHead();
         </div>
     </div>
     <?php footerHere(); ?>
+    <script>$('.datepicker').datepicker();</script>
 </body>
 </html>

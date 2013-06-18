@@ -1,10 +1,23 @@
 <?php
 require_once (__DIR__ . '/includes/includes.php');
+require_once ('includes/classes/PasswordHash.php');
+$hasher = new PasswordHash(8, TRUE); // initialize the PHPass class
+
 if(empty($_SESSION['user']))
 {
     header("Location: login.php");
     die("Redirecting to login.php");
 }
+
+if ($_POST['op'] === 'change') {
+    $db=DB::getConnection();
+    $newpass = $_POST['newpass'];
+    $hash = $hasher->HashPassword($newpass);
+    $query=$db->prepare("UPDATE users SET user_pass=:user_pass WHERE user_id=1");
+    $query->execute(array('user_pass' => $hash ));
+    $info='Password changed';
+}
+
 $d = new Domains();
 $r = new Registrars();
 pageHead();
@@ -24,9 +37,15 @@ pageHead();
                 </ul>
             </div>
             <div class="span9">
-                <?php
-                    echo 'Nothing to show';
-                ?>
+                <?php if (isset($info)) {
+                    box('Info', 'Password has been changed', 'info');
+                } ?>
+                <form action="settings.php" method="POST">
+                    <input type="hidden" name="op" value="change">
+                    New password:<br>
+                    <input type="password" name="newpass" size="60"><br>
+                    <input type="submit" value="Change password">
+                </form>
             </div>
         </div>
     </div>

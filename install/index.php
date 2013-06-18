@@ -35,8 +35,8 @@ try {
     $what='Creating table `users`';
     $query=$db->prepare("CREATE TABLE IF NOT EXISTS `users` (
       `user_id` int(10) NOT NULL AUTO_INCREMENT,
-      `user_name` varchar(50) NOT NULL,
-      `user_pass` varchar(50) NOT NULL,
+      `user_name` varchar(60) NOT NULL,
+      `user_pass` varchar(60) NOT NULL,
       PRIMARY KEY (`user_id`)
     ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;");
     $query->execute();
