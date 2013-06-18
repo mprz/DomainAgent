@@ -87,13 +87,13 @@ pageHead();
                                         <div class="control-group">
                                             <label class="control-label">Registration date</label>
                                             <div class="controls">
-                                                <input type="text" class="input-block-level datepicker input-xlarge" name="dom_reg_date" value="'.$d->get($id)['dom_reg_date'].'">
+                                                <input type="text" class="input-block-level datepicker input-xlarge" data-date-format="yyyy-mm-gg" name="dom_reg_date" value="'.$d->get($id)['dom_reg_date'].'">
                                             </div>
                                         </div>
                                         <div class="control-group">
                                             <label class="control-label">Expiration date</label>
                                             <div class="controls">
-                                                <input type="text" class="input-block-level datepicker input-xlarge" name="dom_exp_date" value="'.$d->get($id)['dom_exp_date'].'">
+                                                <input type="text" class="input-block-level datepicker input-xlarge" data-date-format="yyyy-mm-gg" name="dom_exp_date" value="'.$d->get($id)['dom_exp_date'].'">
                                             </div>
                                         </div>
                                         <div class="control-group">

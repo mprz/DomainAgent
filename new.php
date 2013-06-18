@@ -71,13 +71,13 @@ if (isset($_POST['action']) && $_POST['action']=='new')
                                         <div class="control-group">
                                             <label class="control-label">Registration date</label>
                                             <div class="controls">
-                                                <input type="text" class="input-block-level datepicker input-xlarge" name="dom_reg_date" value="">
+                                                <input type="text" class="input-block-level datepicker input-xlarge" data-date-format="yyyy-mm-gg" name="dom_reg_date" value="">
                                             </div>
                                         </div>
                                         <div class="control-group">
                                             <label class="control-label">Expiration date</label>
                                             <div class="controls">
-                                                <input type="text" class="input-block-level datepicker input-xlarge" name="dom_exp_date" value="">
+                                                <input type="text" class="input-block-level datepicker input-xlarge" data-date-format="yyyy-mm-gg" name="dom_exp_date" value="">
                                             </div>
                                         </div>
                                         <div class="control-group">
