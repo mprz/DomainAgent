@@ -50,10 +50,11 @@ pageHead('Domains');
                                     <?php
                                     if ($d->numTotal()>0){
                                         foreach($domains as $row) {
+                                            $dom=$r->get($row['dom_reg_id']);
                                             echo '
                                     <tr>
                                         <td><a href="single.php?id='.$row['dom_id'].'">'.$row['dom_name'].'</a></td>
-                                        <td><a href="registrar.php?id='.$row['dom_reg_id'].'">'.$r->get($row['dom_reg_id'])['reg_name'].'</a></td>
+                                        <td><a href="registrar.php?id='.$row['dom_reg_id'].'">'.$dom['reg_name'].'</a></td>
                                         <td>'.$row['dom_days_left'].'</td>
                                         <td>
                                             <a href="http://'.$row['dom_name'].'"><i class="icon-share"></i></a>
@@ -79,18 +80,20 @@ pageHead('Domains');
                                 <tbody>
                                 <?php
                                 if ($d->numGood()>0) {
-                                foreach($good as $row) {?>
+                                    foreach($domains as $row) {
+                                        $dom=$r->get($row['dom_reg_id']);
+                                        echo '
                                     <tr>
-                                        <td><a href="single.php?id=<?php echo $row['dom_id'].'">'.$row['dom_name']; ?></a></td>
-                                        <td><a href="registrar.php?id=<?php echo $row['dom_reg_id'].'">'.$r->get($row['dom_reg_id'])['reg_name'].'</a>'; ?></td>
-                                        <td><?php echo $row['dom_days_left']; ?></td>
+                                        <td><a href="single.php?id='.$row['dom_id'].'">'.$row['dom_name'].'</a></td>
+                                        <td><a href="registrar.php?id='.$row['dom_reg_id'].'">'.$dom['reg_name'].'</a></td>
+                                        <td>'.$row['dom_days_left'].'</td>
                                         <td>
-                                            <a href="http://<?php echo $row['dom_name']; ?>"><i class="icon-share"></i></a>
-                                            <a href="single.php?id=<?php echo $row['dom_id']; ?>" alt="Details"><i class="icon-edit"></i></a>
-                                            <a href="delete.php?id=<?php echo $row['dom_id']; ?>"><i class="icon-trash"></i></a>
+                                            <a href="http://'.$row['dom_name'].'"><i class="icon-share"></i></a>
+                                            <a href="single.php?id='.$row['dom_id'].'" alt="Details"><i class="icon-edit"></i></a>
+                                            <a href="delete.php?id='.$row['dom_id'].'"><i class="icon-trash"></i></a>
                                         </td>
-                                    </tr>
-                                <?php }
+                                    </tr>';
+                                    }
                                 }?>
                                 </tbody>
                             </table>
@@ -109,18 +112,20 @@ pageHead('Domains');
                                 <?php
                                 if ($d->numExpiring()>0)
                                 {
-                                foreach($expiring as $row) {?>
+                                    foreach($domains as $row) {
+                                        $dom=$r->get($row['dom_reg_id']);
+                                        echo '
                                     <tr>
-                                        <td><a href="single.php?id=<?php echo $row['dom_id'].'">'.$row['dom_name']; ?></a></td>
-                                        <td><a href="registrar.php?id=<?php echo $row['dom_reg_id'].'">'.$r->get($row['dom_reg_id'])['reg_name'].'</a>'; ?></td>
-                                        <td><?php echo $row['dom_days_left']; ?></td>
+                                        <td><a href="single.php?id='.$row['dom_id'].'">'.$row['dom_name'].'</a></td>
+                                        <td><a href="registrar.php?id='.$row['dom_reg_id'].'">'.$dom['reg_name'].'</a></td>
+                                        <td>'.$row['dom_days_left'].'</td>
                                         <td>
-                                            <a href="http://<?php echo $row['dom_name']; ?>"><i class="icon-share"></i></a>
-                                            <a href="single.php?id=<?php echo $row['dom_id']; ?>" alt="Details"><i class="icon-edit"></i></a>
-                                            <a href="delete.php?id=<?php echo $row['dom_id']; ?>"><i class="icon-trash"></i></a>
+                                            <a href="http://'.$row['dom_name'].'"><i class="icon-share"></i></a>
+                                            <a href="single.php?id='.$row['dom_id'].'" alt="Details"><i class="icon-edit"></i></a>
+                                            <a href="delete.php?id='.$row['dom_id'].'"><i class="icon-trash"></i></a>
                                         </td>
-                                    </tr>
-                                <?php }
+                                    </tr>';
+                                    }
                                 }?>
                                 </tbody>
                             </table>
@@ -138,18 +143,20 @@ pageHead('Domains');
                                 <tbody>
                                 <?php
                                 if ($d->numExpired()>0) {
-                                foreach($expired as $row) {?>
+                                    foreach($domains as $row) {
+                                        $dom=$r->get($row['dom_reg_id']);
+                                        echo '
                                     <tr>
-                                        <td><a href="single.php?id=<?php echo $row['dom_id'].'">'.$row['dom_name']; ?></a></td>
-                                        <td><a href="registrar.php?id=<?php echo $row['dom_reg_id'].'">'.$r->get($row['dom_reg_id'])['reg_name'].'</a>'; ?></td>
-                                        <td><?php echo $row['dom_days_left']; ?></td>
+                                        <td><a href="single.php?id='.$row['dom_id'].'">'.$row['dom_name'].'</a></td>
+                                        <td><a href="registrar.php?id='.$row['dom_reg_id'].'">'.$dom['reg_name'].'</a></td>
+                                        <td>'.$row['dom_days_left'].'</td>
                                         <td>
-                                            <a href="http://<?php echo $row['dom_name']; ?>"><i class="icon-share"></i></a>
-                                            <a href="single.php?id=<?php echo $row['dom_id']; ?>" alt="Details"><i class="icon-edit"></i></a>
-                                            <a href="delete.php?id=<?php echo $row['dom_id']; ?>"><i class="icon-trash"></i></a>
+                                            <a href="http://'.$row['dom_name'].'"><i class="icon-share"></i></a>
+                                            <a href="single.php?id='.$row['dom_id'].'" alt="Details"><i class="icon-edit"></i></a>
+                                            <a href="delete.php?id='.$row['dom_id'].'"><i class="icon-trash"></i></a>
                                         </td>
-                                    </tr>
-                                <?php }
+                                    </tr>';
+                                    }
                                 }?>
                                 </tbody>
                             </table>
