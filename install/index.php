@@ -1,8 +1,6 @@
 <?php
 require_once ('../includes/config.php');
-
 try {
-
     $db = new PDO( 'mysql:host='.DB_HOST.';dbname='.DB_NAME, DB_USER, DB_PASS );
 
     $what='Creating table `registrars`';
@@ -40,6 +38,12 @@ try {
       PRIMARY KEY (`user_id`)
     ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;");
     $query->execute();
+
+    $what='Populating table users';
+    $query=$db->prepare("INSERT INTO `users` (`user_id`, `user_name`, `user_pass`) VALUES
+        (1, 'admin', :pass)");
+    $pass='$2a$08$Lg5XF1Tt.X5TGyfb43vBBeEFZm4GTXQhKQ6SY6emkcnhAGT8KfxFS';
+    $query->execute(array('pass'=>$pass));
 
     $what='Populating table `registrars`';
     $query=$db->prepare("INSERT INTO `registrars` (`reg_id`, `reg_name`, `reg_link`, `reg_comment`, `reg_modified`) VALUES
