@@ -16,7 +16,7 @@ Changelog:
 + installer comes with over 20 most popular registrars
 
 Requirements:
-* PHP 5.3
+* PHP 5.4
 * MySQL 5.1
 
 Installation:
