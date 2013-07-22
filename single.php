@@ -56,6 +56,9 @@ pageHead();
                 }
                 if ($id>=0  && $d->get($id)>-1)
                 {
+                    $dom=$d->get($id);
+                    $rget=$r->get($dom['dom_reg_id']);
+                    $dname=$rget['reg_name'];
                     echo'
                 <div class="row">
                     <div class="span8">
@@ -63,19 +66,19 @@ pageHead();
                             <div class="span5">
                                 <form class="form-horizontal" action="single.php?id='.$id.'" method="post">
                                     <fieldset>
-                                        <input type="hidden" name="dom_id" value="'.$d->get($id)['dom_id'].'">
+                                        <input type="hidden" name="dom_id" value="'.$dom['dom_id'].'">
                                         <input type="hidden" name="action" value="update">
                                         <div class="control-group">
                                             <label class="control-label">Domain name</label>
                                             <div class="controls">
-                                                <input type="text" class="input-medium input-block-level input-xlarge" name="dom_name" value="'.$d->get($id)['dom_name'].'">
+                                                <input type="text" class="input-medium input-block-level input-xlarge" name="dom_name" value="'.$dom['dom_name'].'">
                                             </div>
                                         </div>
                                         <div class="control-group">
                                             <label class="control-label">Registrar</label>
                                             <div class="controls">
                                                 <select name="dom_reg_id" class="input-xlarge">
-                                                    <option value="'.$d->get($id)['dom_reg_id'].'">'.$r->get($d->get($id)['dom_reg_id'])['reg_name'].' /CURRENT/</option>';
+                                                    <option value="'.$dom['dom_reg_id'].'">'.$dname.' /CURRENT/</option>';
                                                     foreach($r->fetchAll() as $row) {
                                                     echo 
 '                                                   <option value="'.$row['reg_id'].'">'.$row['reg_name'].'</option>';    
@@ -87,19 +90,19 @@ pageHead();
                                         <div class="control-group">
                                             <label class="control-label">Registration date</label>
                                             <div class="controls">
-                                                <input type="text" class="input-block-level datepicker input-xlarge" data-date-format="yyyy-mm-dd" name="dom_reg_date" value="'.$d->get($id)['dom_reg_date'].'">
+                                                <input type="text" class="input-block-level datepicker input-xlarge" data-date-format="yyyy-mm-dd" name="dom_reg_date" value="'.$dom['dom_reg_date'].'">
                                             </div>
                                         </div>
                                         <div class="control-group">
                                             <label class="control-label">Expiration date</label>
                                             <div class="controls">
-                                                <input type="text" class="input-block-level datepicker input-xlarge" data-date-format="yyyy-mm-dd" name="dom_exp_date" value="'.$d->get($id)['dom_exp_date'].'">
+                                                <input type="text" class="input-block-level datepicker input-xlarge" data-date-format="yyyy-mm-dd" name="dom_exp_date" value="'.$dom['dom_exp_date'].'">
                                             </div>
                                         </div>
                                         <div class="control-group">
                                             <label class="control-label">Comments</label>
                                             <div class="controls">
-                                                <textarea class="input-xlarge" rows="7" name="dom_comment">'.$d->get($id)['dom_comment'].'</textarea>
+                                                <textarea class="input-xlarge" rows="7" name="dom_comment">'.$dom['dom_comment'].'</textarea>
                                             </div>
                                         </div>
                                         <div class="control-group">
@@ -113,7 +116,7 @@ pageHead();
                                 </form>
                             </div>
                             <div class="span3">
-                                <img src="http://s.wordpress.com/mshots/v1/http%3A%2F%2F'.$d->get($id)['dom_name'].'%2F?w=250" alt="Thumbnail" />
+                                <img src="http://s.wordpress.com/mshots/v1/http%3A%2F%2F'.$dom['dom_name'].'%2F?w=250" alt="Thumbnail" />
                             </div>
                         </div>
                     </div>

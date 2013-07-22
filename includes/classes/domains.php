@@ -1,35 +1,35 @@
 <?php
 class Domains {
-    protected $_total             = 0;    // store total number of domains
-    protected $_good              = 0;    // store number of domains in good standing
-    protected $_expiring          = 0;    // store number of expiring domains
-    protected $_expired           = 0;    // store number of expired domains
-    protected $_domains           = array();
-    protected $_connection;
+    protected $total             = 0;    // store total number of domains
+    protected $good              = 0;    // store number of domains in good standing
+    protected $expiring          = 0;    // store number of expiring domains
+    protected $expired           = 0;    // store number of expired domains
+    protected $domains           = array();
+    protected $connection;
 
     const DOMAIN_OK             = 0;
     const DOMAIN_EXPIRING       = 1;
     const DOMAIN_EXPIRED        = 2;
     
     public function __construct() {
-        $this->_connection=DB::getConnection();
-        $this->_domains=$this->fetchAll();
+        $this->connection=DB::getConnection();
+        $this->domains=$this->fetchAll();
     }
     // returns a number of domains
     public function numTotal() {
-        return $this->_total;
+        return $this->total;
     }
     // returns number of good domains
     public function numGood() {
-        return $this->_good;
+        return $this->good;
     }
     // returns number of expiring domains
     public function numExpiring() {
-        return $this->_expiring;
+        return $this->expiring;
     }
     // returns number of expired domains
     public function numExpired() {
-        return $this->_expired;
+        return $this->expired;
     }
     // validates domain data
     public function validate($domain) {
@@ -40,7 +40,7 @@ class Domains {
     // get a domain details for domain with given id
     public function get($id) {
         // basically we are going through the whole list and if we find a match we return the content
-        foreach($this->_domains as $domain) {
+        foreach($this->domains as $domain) {
             if ($domain['dom_id']==$id)
                 $result=$domain;
         }
@@ -52,7 +52,7 @@ class Domains {
     // delete domain
     public function delete($id) {
         try {
-            $query=$this->_connection->prepare("DELETE FROM `domains`
+            $query=$this->connection->prepare("DELETE FROM `domains`
                                     WHERE dom_id=:dom_id");
             $query->execute(array('dom_id'          => $id));
             $result = true;
@@ -63,13 +63,13 @@ class Domains {
             $result = false;
         }
         // let's reload just in case to reflect changes
-        $this->_domains = $this->fetchAll();
+        $this->domains = $this->fetchAll();
         return $result;
     }
     // update database with $domain, all required info should be there STUB
     public function update($domain) {
         try {
-            $query=$this->_connection->prepare("UPDATE `domains`
+            $query=$this->connection->prepare("UPDATE `domains`
                                     SET dom_name=:dom_name, dom_reg_id=:dom_reg_id, dom_reg_date=:dom_reg_date,
                                         dom_exp_date=:dom_exp_date, dom_comment=:dom_comment, dom_status=0
                                     WHERE dom_id=:dom_id");
@@ -88,7 +88,7 @@ class Domains {
             $result = false;
         }
         // let's reload just in case to reflect changes
-        $this->_domains = $this->fetchAll();
+        $this->domains = $this->fetchAll();
         return $result;
     }
     // insert a domain into database
@@ -97,7 +97,7 @@ class Domains {
         if ($this->validate($domain)) {
             // perform insert here
             try {
-                $query=$this->_connection->prepare("INSERT INTO `domains` (dom_name, dom_reg_id, dom_reg_date, dom_exp_date, dom_comment)
+                $query=$this->connection->prepare("INSERT INTO `domains` (dom_name, dom_reg_id, dom_reg_date, dom_exp_date, dom_comment)
                                         VALUES (:dom_name, :dom_reg_id, :dom_reg_date,
                                             :dom_exp_date, :dom_comment)");
                 $query->execute(array(  'dom_name'      => $domain['dom_name'],
@@ -119,20 +119,20 @@ class Domains {
             $result=false;
         }
         // let's reload just in case to reflect changes
-        $this->_domains = $this->fetchAll();
+        $this->domains = $this->fetchAll();
         return $result;
     }
     // fetch all domains from database
     public function fetch() {
         try {
-            $this->_total=0;
-            $this->_expired=0;
-            $this->_expiring=0;
-            $this->_good=0;
+            $this->total=0;
+            $this->expired=0;
+            $this->expiring=0;
+            $this->good=0;
             // open connection and create query
             $today = date("Y-m-d");
             // get all domains and calculate how many days left based on current date and exp_date
-            $query=$this->_connection->prepare("SELECT dom_id, dom_name, dom_reg_id, dom_reg_date, dom_exp_date,
+            $query=$this->connection->prepare("SELECT dom_id, dom_name, dom_reg_id, dom_reg_date, dom_exp_date,
                                             dom_comment, dom_status, TIMESTAMPDIFF(DAY, :today,
                                             domains.dom_exp_date) as dom_days_left
                                             FROM `domains`, `registrars`
@@ -142,18 +142,18 @@ class Domains {
             $result = $query->fetchAll();
             $data = '';
             foreach ($result as $row) {
-                $this->_total++;
+                $this->total++;
                 if ($row['dom_days_left']>30) {
                     $row['Status']=Domains::DOMAIN_OK;
-                    $this->_good++;
+                    $this->good++;
                 }
                 elseif ($row['dom_days_left']>1) {
                     $row['Status']=Domains::DOMAIN_EXPIRING;
-                    $this->_expiring++;
+                    $this->expiring++;
                 }
                 else {
                     $row['Status']=Domains::DOMAIN_EXPIRED;
-                    $this->_expired++;
+                    $this->expired++;
                 }
                 $data[]=$row;
             }
@@ -165,7 +165,7 @@ class Domains {
             return false;
         }
         if (!empty($data)){
-            $this->_domains=$data;
+            $this->domains=$data;
             $result=$data;
         } else
             $result=false;
@@ -178,7 +178,7 @@ class Domains {
     // fetch an array of good domains
     public function fetchGood() {
         // browse all domains
-        foreach ($this->_domains as $row) {
+        foreach ($this->domains as $row) {
             if ($row['dom_days_left']>30)
                 // add domains with more than 30 days left to result
                 $data[]=$row;
@@ -191,7 +191,7 @@ class Domains {
     // fetch an array of good domains
     public function fetchExpiring() {
         // browse all domains
-        foreach ($this->_domains as $row) {
+        foreach ($this->domains as $row) {
             // add domains between 1 and 30 days to result
             if ($row['dom_days_left']>1 && $row['dom_days_left']<=30)
                 $data[]=$row;
@@ -204,7 +204,7 @@ class Domains {
     // fetch an array of good domains
     public function fetchExpired() {
         // browse all domains
-        foreach ($this->_domains as $row) {
+        foreach ($this->domains as $row) {
             // add ones below one day to the result
             if ($row['dom_days_left']<=1)
                 $data[]=$row;

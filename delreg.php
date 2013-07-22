@@ -44,7 +44,8 @@ pageHead();
                             box('Oh boy','Something went terribly wrong','warning');
                     }
                     else {
-                        echo '<h3>You are about to delete</h3><br><h2>'.$r->get($id)['reg_name'].'</h2>';
+                        $reg=$r->get($id);
+                        echo '<h3>You are about to delete</h3><br><h2>'.$reg['reg_name'].'</h2>';
                         echo '
                         <form class="form-horizontal" action="delreg.php?id='.$id.'" method="post">
                             <input type="hidden" name="action" value="delete">

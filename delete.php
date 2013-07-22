@@ -44,7 +44,8 @@ pageHead();
                             box('Oh boy','Something went terribly wrong','warning');
                     }
                     else {
-                        echo '<h3>You are about to delete</h3><br><h2>'.$d->get($id)['dom_name'].'</h2>';
+                        $dom=$d->get($id);
+                        echo '<h3>You are about to delete</h3><br><h2>'.$dom['dom_name'].'</h2>';
                         echo '
                         <form class="form-horizontal" action="delete.php?id='.$id.'" method="post">
                             <input type="hidden" name="action" value="delete">
